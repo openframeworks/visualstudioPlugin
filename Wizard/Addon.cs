@@ -349,9 +349,14 @@ namespace of
         {
             foreach(var filter in libsFilters)
             {
-                foreach(var lib in src.GetFiles(filter, SearchOption.TopDirectoryOnly)){
-                    dst.Add(lib.FullName);
+                try
+                {
+                    foreach (var lib in src.GetFiles(filter, SearchOption.TopDirectoryOnly))
+                    {
+                        dst.Add(lib.FullName);
+                    }
                 }
+                catch (Exception e) { }
             }
         }
 
@@ -426,6 +431,41 @@ namespace of
                     }
                 }
             }
+        }
+
+        public List<string> getIncludes()
+        {
+            return includePaths;
+        }
+
+        public List<string> getLibs32Debug()
+        {
+            return libs32Debug;
+        }
+
+        public List<string> getLibs32Release()
+        {
+            return libs32Release;
+        }
+
+        public List<string> getLibs64Debug()
+        {
+            return libs64Debug;
+        }
+
+        public List<string> getLibs64Release()
+        {
+            return libs32Release;
+        }
+
+        public List<string> getCFlags()
+        {
+            return cflags;
+        }
+
+        public List<string> getLDFlags()
+        {
+            return ldflags;
         }
 
         private string addonName;

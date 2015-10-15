@@ -17,17 +17,43 @@ namespace of
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         public static extern void OutputDebugString(string message);
 
-        public Form1()
+        public Form1(string projectPath)
         {
             InitializeComponent();
 
-            OutputDebugString("Listing directories in C:\\Users\\arturo\\Code\\openFrameworks\\addons ");
+            var addonsMake = new FileInfo(projectPath + "\\addons.make");
+            if (addonsMake.Exists)
+            {
+                var addonsMakeStrm = addonsMake.OpenText();
+                while (!addonsMakeStrm.EndOfStream)
+                {
+                    var line = addonsMakeStrm.ReadLine().Trim();
+                    if (line.Count() == 0)
+                    {
+                        continue;
+                    }
+                    if (line.First() == '#')
+                    {
+                        continue;
+                    }
+                    if (line.Contains("#"))
+                    {
+                        line = line.Split('#')[0].Trim();
+                    }
+                    currentAddons.Add(line);
+                }
+            }
+
             DirectoryInfo di = new DirectoryInfo(getOFRoot() + "\\addons");
             var directories = di.GetDirectories("ofx*", SearchOption.TopDirectoryOnly);
 
             foreach (DirectoryInfo d in directories)
             {
-                checkedListBox1.Items.Add(d.Name);
+                var idx = checkedListBox1.Items.Add(d.Name);
+                if (currentAddons.Contains(d.Name))
+                {
+                    checkedListBox1.SetItemChecked(idx, true);
+                }
             }
         }
 
@@ -41,9 +67,16 @@ namespace of
             return addons;
         }
 
+        public List<string> getProjectCurrentAddons()
+        {
+            return currentAddons;
+        }
+
         public string getOFRoot()
         {
             return "C:\\Users\\arturo\\Code\\openFrameworks";
         }
+
+        List<string> currentAddons = new List<string>();
     }
 }

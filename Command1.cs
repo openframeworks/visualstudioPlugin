@@ -17,6 +17,8 @@ using of;
 using System.Windows.Forms;
 using EnvDTE80;
 using EnvDTE;
+using System.IO;
+using System.Linq;
 
 namespace VSIXopenFrameworks
 {
@@ -133,7 +135,7 @@ namespace VSIXopenFrameworks
                 var project = (EnvDTE.Project)pvar;
                 var vcproject = (VCProject)project.Object;
 
-                var inputForm = new Form1();
+                var inputForm = new Form1(Path.GetDirectoryName(doc));
                 var result = inputForm.ShowDialog();
                 if (result == DialogResult.Cancel)
                 {
@@ -141,7 +143,15 @@ namespace VSIXopenFrameworks
                 }
 
                 var addons = inputForm.getAddons();
-                Wizard.addAddons(vcproject, inputForm.getOFRoot(), addons);
+                var currentAddons = inputForm.getProjectCurrentAddons();
+
+                var addonsToRemove = currentAddons.Except(addons);
+                var remainingAddons = currentAddons.Except(addonsToRemove);
+                var newAddons = addons.Except(remainingAddons);
+
+                Wizard.removeAddons(vcproject, inputForm.getOFRoot(), addonsToRemove);
+                Wizard.addAddons(vcproject, inputForm.getOFRoot(), newAddons);
+                Wizard.saveAddonsMake(vcproject, addons);
 
                 DTE2 application = project.DTE.Application as DTE2;
                 UIHierarchy solExplorer = application.ToolWindows.SolutionExplorer;
