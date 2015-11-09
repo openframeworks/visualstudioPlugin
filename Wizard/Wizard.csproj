@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -62,19 +63,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addon.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="FormOFRoot.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FormOFRoot.Designer.cs">
+      <DependentUpon>FormOFRoot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAddons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddons.Designer.cs">
+      <DependentUpon>FormAddons.cs</DependentUpon>
     </Compile>
     <Compile Include="OFUpdateWizard.cs" />
     <Compile Include="OFWizard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="FormAddons.resx">
+      <DependentUpon>FormAddons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOFRoot.resx">
+      <DependentUpon>FormOFRoot.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

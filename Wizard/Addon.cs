@@ -11,11 +11,19 @@ namespace of
 {
     public class Folder
     {
-        public Folder(string path, IEnumerable<string> filters)
+        public Folder(string path, IEnumerable<string> filters, string projectPath)
         {
             this.path = path;
             name = Path.GetFileName(path);
-            DirectoryInfo di = new DirectoryInfo(path);
+            DirectoryInfo di;
+            if (Path.IsPathRooted(path))
+            {
+                di = new DirectoryInfo(path);
+            }
+            else
+            {
+                di = new DirectoryInfo(Path.Combine(projectPath, path));
+            }
             var files = new List<FileInfo>();
             foreach (var filter in filters)
             {
@@ -33,23 +41,32 @@ namespace of
             {
                 foreach (var dir in di.GetDirectories("*", SearchOption.TopDirectoryOnly))
                 {
-                    folders.Add(new Folder(Path.Combine(path, dir.FullName), filters));
+                    folders.Add(new Folder(Path.Combine(path, dir.Name), filters, projectPath));
                 }
             }
             catch (Exception) { }
         }
 
-        public void toVCFilter(VCFilter parent)
+        public bool toVCFilter(VCFilter parent)
         {
-            VCFilter filter = parent.AddFilter(name);
-            foreach(var file in files)
+            bool hasFiles = files.Count > 0;
+            if (files.Count > 0 || folders.Count > 0)
             {
-                filter.AddFile(Path.Combine(path,file));
+                VCFilter filter = parent.AddFilter(name);
+                foreach (var file in files)
+                {
+                    filter.AddFile(Path.Combine(path, file));
+                }
+                foreach (var folder in folders)
+                {
+                    hasFiles |= folder.toVCFilter(filter);
+                }
+                if (!hasFiles)
+                {
+                    parent.RemoveFilter(filter);
+                }
             }
-            foreach(var folder in folders)
-            {
-                folder.toVCFilter(filter);
-            }
+            return hasFiles;
         }
 
         public string getRecursiveFolderList()
@@ -82,7 +99,7 @@ namespace of
 
     public class Addon
     {
-        public Addon(string ofRoot, string nameOrPath)
+        public Addon(string ofRoot, string nameOrPath, string projectPath)
         {
             // check if the addon is in addons or is local
             DirectoryInfo di = new DirectoryInfo(nameOrPath);
@@ -99,8 +116,8 @@ namespace of
 
             // find all sources and headers
             String[] srcFilters = { "*.h", "*.hpp", "*.cpp", "*.c", "*.s", "*.S", "*.cc", "*.cxx", "*.c++" };
-            srcFolder = new Folder(Path.Combine(addonPath, "src"), srcFilters);
-            libsFolder = new Folder(Path.Combine(addonPath, "libs"), srcFilters);
+            srcFolder = new Folder(Path.Combine(addonPath, "src"), srcFilters, projectPath);
+            libsFolder = new Folder(Path.Combine(addonPath, "libs"), srcFilters, projectPath);
 
             // find binary libs
             di = new DirectoryInfo(Path.Combine(addonPath, "libs"));

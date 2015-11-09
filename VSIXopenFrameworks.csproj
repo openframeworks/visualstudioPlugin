@@ -59,7 +59,7 @@
     <None Include="source.extension.vsixmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\openFrameworksTemplate\openFrameworksTemplate.csproj">
+    <ProjectReference Include="openFrameworksTemplate\openFrameworksTemplate.csproj">
       <Project>{3EDA366F-822E-44F5-AAC3-B1FD900B60E4}</Project>
       <Name>openFrameworksTemplate</Name>
       <VSIXSubPath>ProjectTemplates</VSIXSubPath>
@@ -195,9 +195,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GPLv3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\Command1.png" />
     <Content Include="Resources\Command1Package.ico" />
     <Content Include="Resources\of-logo.svg" />
+    <Content Include="__TemplateIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Resources\__TemplateIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

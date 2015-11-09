@@ -135,7 +135,28 @@ namespace VSIXopenFrameworks
                 var project = (EnvDTE.Project)pvar;
                 var vcproject = (VCProject)project.Object;
 
-                var inputForm = new Form1(Path.GetDirectoryName(doc));
+
+                string ofRoot = "..\\..\\..";
+                foreach (VCConfiguration config in vcproject.Configurations)
+                {
+                    ofRoot = config.GetEvaluatedPropertyValue("OF_ROOT");
+                    if (ofRoot != "")
+                    {
+                        break;
+                    }
+                }
+
+                var ofDi = new DirectoryInfo(ofRoot);
+                if (new DirectoryInfo(Path.Combine(vcproject.ProjectDirectory, "..\\..\\..")).Equals(ofDi))
+                {
+                    ofRoot = "..\\..\\..";
+                }
+                else
+                {
+                    ofRoot = Path.GetFullPath(ofRoot);
+                }
+
+                var inputForm = new FormAddons(Path.GetDirectoryName(doc), ofRoot);
                 var result = inputForm.ShowDialog();
                 if (result == DialogResult.Cancel)
                 {
@@ -149,8 +170,8 @@ namespace VSIXopenFrameworks
                 var remainingAddons = currentAddons.Except(addonsToRemove);
                 var newAddons = addons.Except(remainingAddons);
 
-                Wizard.removeAddons(vcproject, inputForm.getOFRoot(), addonsToRemove);
-                Wizard.addAddons(vcproject, inputForm.getOFRoot(), newAddons);
+                Wizard.removeAddons(vcproject, ofRoot, addonsToRemove);
+                Wizard.addAddons(vcproject, ofRoot, newAddons);
                 Wizard.saveAddonsMake(vcproject, addons);
 
                 DTE2 application = project.DTE.Application as DTE2;

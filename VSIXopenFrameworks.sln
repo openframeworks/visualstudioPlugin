@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIXopenFrameworks", "VSIXo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wizard", "Wizard\Wizard.csproj", "{8EC1BFED-D895-4856-9CC9-F8B8514779AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openFrameworksTemplate", "..\openFrameworksTemplate\openFrameworksTemplate.csproj", "{3EDA366F-822E-44F5-AAC3-B1FD900B60E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openFrameworksTemplate", "openFrameworksTemplate\openFrameworksTemplate.csproj", "{3EDA366F-822E-44F5-AAC3-B1FD900B60E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

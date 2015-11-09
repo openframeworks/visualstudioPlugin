@@ -61,7 +61,7 @@ namespace of {
             return false;
         }
 
-        private Form1 inputForm;
+        private FormAddons inputForm;
         private List<string> addons;
         private EnvDTE.DTE dte;
         private string itemName;

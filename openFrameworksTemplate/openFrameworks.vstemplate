@@ -17,8 +17,8 @@
   <TemplateContent>
     <Project TargetFileName="$projectname$.vcxproj" File="emptyExample.vcxproj" ReplaceParameters="true">
       <Folder Name="bin">
-        <Folder Name="data">
-        </Folder>
+          <Folder Name="data">
+      </Folder>
       </Folder>
       <Folder Name="src">
           <ProjectItem ReplaceParameters="false" TargetFileName="main.cpp">main.cpp</ProjectItem>

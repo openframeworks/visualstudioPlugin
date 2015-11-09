@@ -27,11 +27,20 @@ namespace of {
         {
             VCProject vcproject = null;
             vcproject = project.Object as VCProject;
-            addons = inputForm.getAddons();
+            var addons = inputForm.getAddons();
             itemName = vcproject.ItemName;
-            Wizard.addAddons(vcproject, inputForm.getOFRoot(), addons);
+            Wizard.addAddons(vcproject, ofRoot, addons);
             Wizard.saveAddonsMake(vcproject, addons);
-            var ofProject = inputForm.getOFRoot() + "\\libs\\openFrameworksCompiled\\project\\vs\\openFrameworksLib.vcxproj";
+            string ofProject;
+            if (Path.IsPathRooted(ofRoot))
+            {
+                ofProject = Path.Combine(ofRoot, "libs\\openFrameworksCompiled\\project\\vs\\openFrameworksLib.vcxproj");
+            }
+            else
+            {
+                string[] path = { Path.GetDirectoryName(project.FullName), ofRoot, "libs\\openFrameworksCompiled\\project\\vs\\openFrameworksLib.vcxproj" };
+                ofProject = Path.Combine(path);
+            }
             dte.Solution.AddFromFile(ofProject);
         }
 
@@ -122,7 +131,7 @@ namespace of {
             // Retrieve all addons config
             var addons = addonsNames.Select((addonName) =>
             {
-                return new Addon(ofRoot, addonName);
+                return new Addon(ofRoot, addonName, vcproject.ProjectDirectory);
             });
 
             // Filter out the addons to remove config from the existing one
@@ -220,7 +229,7 @@ namespace of {
                 foreach (var addon in addons)
                 {
                     VCFilter addonFolder = addonsFolder.AddFilter(addon);
-                    var addonObj = new Addon(ofRoot, addon);
+                    var addonObj = new Addon(ofRoot, addon, vcproject.ProjectDirectory);
 
                     addonObj.addFilesToVCFilter(addonFolder);
                     addonObj.addIncludePathsToVCProject(vcproject);
@@ -286,35 +295,63 @@ namespace of {
             Wizard.CollapseAllFolders(solExplorer, itemName);
         }
 
+        public static bool isOFDirectory(string ofRoot)
+        {
+            DirectoryInfo di = new DirectoryInfo(ofRoot);
+            if (!di.Exists)
+            {
+                return false;
+            }
+            DirectoryInfo diLibs = new DirectoryInfo(Path.Combine(ofRoot, "libs"));
+            if (!diLibs.Exists)
+            {
+                return false;
+            }
+            DirectoryInfo diOFsrc = new DirectoryInfo(Path.Combine(diLibs.FullName, "openFrameworks"));
+            if (!diOFsrc.Exists)
+            {
+                return false;
+            }
+            DirectoryInfo diAddons = new DirectoryInfo(Path.Combine(ofRoot, "addons"));
+            if (!diAddons.Exists)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind, object[] customParams)
         {
             dte = (EnvDTE.DTE)automationObject;
-            String destinationDirectory = replacementsDictionary["$destinationdirectory$"];
-            try
+            string destinationDirectory = replacementsDictionary["$destinationdirectory$"];
+            
+            string fullOFRoot = Path.Combine(destinationDirectory, "..\\..\\..");
+            while (!isOFDirectory(fullOFRoot))
             {
-                // Display a form to the user. The form collects 
-                // input for the custom message.
-                inputForm = new Form1(destinationDirectory);
-                var result = inputForm.ShowDialog();
-                if(result == DialogResult.Cancel)
+                var ofPathForm = new FormOFRoot();
+                var resultOFPAth = ofPathForm.ShowDialog();
+                if (resultOFPAth == DialogResult.Cancel)
                 {
                     throw new WizardBackoutException();
                 }
-
-                // Add custom parameters.
-                //replacementsDictionary.Add("$custommessage$", customMessage);
-            }
-            catch (Exception ex)
-            {
-                if (Directory.Exists(destinationDirectory))
+                else
                 {
-                    Directory.Delete(destinationDirectory, true);
+                    fullOFRoot = ofPathForm.getOFRoot();
+                    ofRoot = fullOFRoot;
                 }
-
-                Debug.WriteLine(ex);
-
-                throw;
             }
+
+            // Display a form to the user. The form collects 
+            // input for the custom message.
+            inputForm = new FormAddons(destinationDirectory, ofRoot);
+            var result = inputForm.ShowDialog();
+            if(result == DialogResult.Cancel)
+            {
+                throw new WizardBackoutException();
+            }
+
+            // Add custom parameters.
+            replacementsDictionary.Add("$ofroot$", ofRoot);
 
         }
 
@@ -323,9 +360,9 @@ namespace of {
             return true;
         }
 
-        private Form1 inputForm;
-        private List<string> addons;
+        private FormAddons inputForm;
         private EnvDTE.DTE dte;
         private string itemName;
+        private string ofRoot = "..\\..\\..";
     };
 }
