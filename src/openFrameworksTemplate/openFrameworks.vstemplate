@@ -1,0 +1,36 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>openFrameworks</Name>
+    <Description>openFrameworks Application project</Description>
+    <ProjectType>VC</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>false</CreateNewFolder>
+    <DefaultName>openFrameworksApp1</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.png</Icon>
+    <CreateInPlace>true</CreateInPlace>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="$projectname$.vcxproj" File="emptyExample.vcxproj" ReplaceParameters="true">
+      <Folder Name="bin">
+          <Folder Name="data">
+      </Folder>
+      </Folder>
+      <Folder Name="src">
+          <ProjectItem ReplaceParameters="false" TargetFileName="main.cpp">main.cpp</ProjectItem>
+          <ProjectItem ReplaceParameters="false" TargetFileName="ofApp.cpp">ofApp.cpp</ProjectItem>
+          <ProjectItem ReplaceParameters="false" TargetFileName="ofApp.h">ofApp.h</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="false" TargetFileName="$projectname$.vcxproj.filters">emptyExample.vcxproj.filters</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="icon.rc">icon.rc</ProjectItem>
+    </Project>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa743626ee3de858</Assembly>
+    <FullClassName>of.Wizard</FullClassName>
+</WizardExtension>
+</VSTemplate>
