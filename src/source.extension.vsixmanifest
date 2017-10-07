@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSIXopenframeworks.4112E29A-B109-4E35-8C1F-B9255C73895D" Version="0.2" Language="en-US" Publisher="Arturo Castro, Half Scheidl" />
+        <Identity Id="VSIXopenframeworks2017.A049B6B4-2855-4C1C-A3A6-13ED823BB898" Version="0.3" Language="en-US" Publisher="Arturo Castro, Half Scheidl" />
         <DisplayName>openFrameworks plugin for Visual Studio 2017</DisplayName>
         <Description xml:space="preserve">openFrameworks plugin for Visual Studio 2017</Description>
         <License>GPLv3.txt</License>
         <Icon>__TemplateIcon.png</Icon>
     </Metadata>
-    <Installation AllUsers="true">
+    <Installation>
         <InstallationTarget Version="15.0" Id="Microsoft.VisualStudio.Community" />
         <InstallationTarget Version="15.0" Id="Microsoft.VisualStudio.Pro" />
         <InstallationTarget Version="15.0" Id="Microsoft.VisualStudio.Enterprise" />
@@ -15,8 +15,8 @@
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
         <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
-      <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
-  </Dependencies>
+        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
+    </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:TargetPath="|openFrameworksTemplate;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" d:ProjectName="openFrameworksTemplate" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Wizard" Path="|Wizard|" AssemblyName="|Wizard;AssemblyName|" />

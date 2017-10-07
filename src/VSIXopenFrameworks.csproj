@@ -45,7 +45,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VSIXopenFrameworks</RootNamespace>
-    <AssemblyName>VSIXopenFrameworks</AssemblyName>
+    <AssemblyName>VSIXopenFrameworks2017</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
