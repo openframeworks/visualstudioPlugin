@@ -69,7 +69,7 @@ namespace VSIXopenFrameworks
         {
             Command1.Initialize(this);
             base.Initialize();
-            Command2.Initialize(this);
+            
             
         }
 
