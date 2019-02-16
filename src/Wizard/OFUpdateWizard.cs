@@ -61,9 +61,9 @@ namespace of {
             return false;
         }
 
-        private FormAddons inputForm;
-        private List<string> addons;
+        //private FormAddons inputForm;
+        //private List<string> addons;
         private EnvDTE.DTE dte;
-        private string itemName;
+        //private string itemName;
     };
 }

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ofarturo")]
 [assembly: AssemblyProduct("openFrameworksTemplate")]
-[assembly: AssemblyCopyright("Copyright © ofarturo 2015")]
+[assembly: AssemblyCopyright("Copyright © ofarturo 2015, H.Scheidl 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

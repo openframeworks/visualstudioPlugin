@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSIXopenframeworks2017.A049B6B4-2855-4C1C-A3A6-13ED823BB898" Version="0.4" Language="en-US" Publisher="Arturo Castro, Half Scheidl" />
+        <Identity Id="VSIXopenframeworks2017.A049B6B4-2855-4C1C-A3A6-13ED823BB898" Version="0.5" Language="en-US" Publisher="Arturo Castro, Half Scheidl" />
         <DisplayName>openFrameworks plugin for Visual Studio 2017</DisplayName>
         <Description xml:space="preserve">openFrameworks plugin for Visual Studio 2017</Description>
+        <MoreInfo>https://openframeworks.cc/</MoreInfo>
         <License>GPLv3.txt</License>
+        <GettingStartedGuide>https://openframeworks.cc/setup/vs/</GettingStartedGuide>
         <Icon>__TemplateIcon.png</Icon>
     </Metadata>
     <Installation>
@@ -23,6 +25,7 @@
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.26606.0,16.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="15.6" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="15.6" DisplayName="Visual Studio C++ core features" />
     </Prerequisites>
 </PackageManifest>

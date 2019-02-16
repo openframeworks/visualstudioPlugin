@@ -43,8 +43,25 @@ namespace of {
                 ofProject = Path.Combine(path);
             }
             dte.Solution.AddFromFile(ofProject);
+
+            //Setting the Windows target platform version of the project
+            //to avoid the error with Windows SDK 
+            //Same problem as described here: https://sharepointforum.org/threads/creating-a-vsix-deployable-c-project-template.142260/
+
+            // use VCProject.LatestTargetPlatformVersion property, which is what the stock wizards use. 
+            VCProject vcProject = (VCProject)project.Object;
+            string wtpv = vcProject.LatestTargetPlatformVersion;
+            if (wtpv != null)
+            {
+                // we only have to do this for a single config, as the property in question is global.
+                IVCCollection configs = (IVCCollection)vcProject.Configurations;
+                VCConfiguration firstConfig = (VCConfiguration)configs.Item(1);
+                IVCRulePropertyStorage rule = (IVCRulePropertyStorage)firstConfig.Rules.Item("ConfigurationGeneral");
+                rule?.SetPropertyValue("WindowsTargetPlatformVersion", wtpv);
+            }
         }
 
+       
         public void ProjectItemFinishedGenerating(ProjectItem projectItem)
         {
 
