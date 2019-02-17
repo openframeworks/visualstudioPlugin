@@ -43,6 +43,10 @@ from https://github.com/openframeworks/visualstudioPlugin/tree/vs2015 and instal
 
 ## Release notes
 
+2019-02-17 v0.6
+- Fixes issue with AdditionalDependencies not working when using add-ons with dependencies to other libraries.
+  See https://github.com/openframeworks/visualstudioPlugin/issues/1
+ 
 2019-02-15 v0.5
 - Upgraded project file to use Visual Studio 2017 (ToolsVersion="15.0").
 - Included Contributor Guidelines and Release Notes.

@@ -9,96 +9,22 @@ using System.Threading.Tasks;
 
 namespace of
 {
-    public class Folder
-    {
-        public Folder(string path, IEnumerable<string> filters, string projectPath)
-        {
-            this.path = path;
-            name = Path.GetFileName(path);
-            DirectoryInfo di;
-            if (Path.IsPathRooted(path))
-            {
-                di = new DirectoryInfo(path);
-            }
-            else
-            {
-                di = new DirectoryInfo(Path.Combine(projectPath, path));
-            }
-            var files = new List<FileInfo>();
-            foreach (var filter in filters)
-            {
-                try
-                {
-                        files.AddRange(di.GetFiles(filter, SearchOption.TopDirectoryOnly));
-                }
-                catch (Exception) { }
-            }
-            foreach (var file in files)
-            {
-                this.files.Add(file.FullName);
-            }
-            try
-            {
-                foreach (var dir in di.GetDirectories("*", SearchOption.TopDirectoryOnly))
-                {
-                    folders.Add(new Folder(Path.Combine(path, dir.Name), filters, projectPath));
-                }
-            }
-            catch (Exception) { }
-        }
-
-        public bool toVCFilter(VCFilter parent)
-        {
-            bool hasFiles = files.Count > 0;
-            if (files.Count > 0 || folders.Count > 0)
-            {
-                VCFilter filter = parent.AddFilter(name);
-                foreach (var file in files)
-                {
-                    filter.AddFile(Path.Combine(path, file));
-                }
-                foreach (var folder in folders)
-                {
-                    hasFiles |= folder.toVCFilter(filter);
-                }
-                if (!hasFiles)
-                {
-                    parent.RemoveFilter(filter);
-                }
-            }
-            return hasFiles;
-        }
-
-        public string getRecursiveFolderList()
-        {
-            string list = "";
-            foreach(var folder in folders)
-            {
-                list += "\"" + path + "\";";
-                list += folder.getRecursiveFolderList();
-            }
-            return list;
-        }
-
-        public List<string> getRecursiveFoldersPaths()
-        {
-            List<string> list = new List<string>();
-            list.Add(path);
-            foreach (var folder in folders)
-            {
-                list.AddRange(folder.getRecursiveFoldersPaths());
-            }
-            return list;
-        }
-
-        public string path;
-        public string name;
-        public List<string> files = new List<string>();
-        public List<Folder> folders = new List<Folder>();
-    }
-
     public class Addon
     {
+        private string addonName;
+        private string addonPath;
+        private Folder srcFolder;
+        private Folder libsFolder;
+        private List<string> libs32Debug = new List<string>();
+        private List<string> libs32Release = new List<string>();
+        private List<string> libs64Debug = new List<string>();
+        private List<string> libs64Release = new List<string>();
+        private List<string> includePaths = new List<string>();
+        private List<string> cflags = new List<string>();
+        private List<string> ldflags = new List<string>();
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern void OutputDebugString(string message);
+
         public Addon(string ofRoot, string nameOrPath, string projectPath)
         {
             // check if the addon is in addons or is local
@@ -419,31 +345,23 @@ namespace of
                         VCLinkerTool linker = (VCLinkerTool)tool;
                         if (config.Name == "Debug|Win32" && libs32Debug.Count > 0)
                         {
-                            linker.AdditionalDependencies += ";\n" + libs32Debug.Aggregate((sum, value) =>
-                            {
-                                return sum + ";\n\"" + value + "\"";
-                            });
+                            linker.AdditionalDependencies.AppendSemiColon();
+                            linker.AdditionalDependencies += libs32Debug.ConcatenateWithSeparator(' ');
                         }
                         else if (config.Name == "Debug|x64" && libs64Debug.Count > 0)
                         {
-                            linker.AdditionalDependencies += ";\n" + libs64Debug.Aggregate((sum, value) =>
-                            {
-                                return sum + ";\n\"" + value + "\"";
-                            });
+                            linker.AdditionalDependencies.AppendSemiColon();
+                            linker.AdditionalDependencies += libs64Debug.ConcatenateWithSeparator(' ');
                         }
                         else if (config.Name == "Release|Win32" && libs32Release.Count > 0)
                         {
-                            linker.AdditionalDependencies += ";\n" + libs32Release.Aggregate((sum, value) =>
-                            {
-                                return sum + ";\n\"" + value + "\"";
-                            });
+                            linker.AdditionalDependencies.AppendSemiColon();
+                            linker.AdditionalDependencies += libs32Release.ConcatenateWithSeparator(' ');
                         }
                         else if (config.Name == "Release|x64" && libs64Release.Count > 0)
                         {
-                            linker.AdditionalDependencies += ";\n" + libs64Debug.Aggregate((sum, value) =>
-                            {
-                                return sum + ";\n\"" + value + "\"";
-                            });
+                            linker.AdditionalDependencies.AppendSemiColon();
+                            linker.AdditionalDependencies += libs64Debug.ConcatenateWithSeparator(' ');
                         }
                     }
                 }
@@ -484,19 +402,5 @@ namespace of
         {
             return ldflags;
         }
-
-        private string addonName;
-        private string addonPath;
-        private Folder srcFolder;
-        private Folder libsFolder;
-        private List<string> libs32Debug = new List<string>();
-        private List<string> libs32Release = new List<string>();
-        private List<string> libs64Debug = new List<string>();
-        private List<string> libs64Release = new List<string>();
-        private List<string> includePaths = new List<string>();
-        private List<string> cflags = new List<string>();
-        private List<string> ldflags = new List<string>();
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public static extern void OutputDebugString(string message);
     }
 }
