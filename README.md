@@ -26,7 +26,7 @@ The information below is for developers looking to contribute to the openFramewo
 To learn about how to get started with openFrameworks using Visual Studio check http://openframeworks.cc/setup/vs.
 ```
 
-To develop this solution further, clone the repo and open /src/VSIXopenFrameworks.sln in Visual Studio.
+To develop this solution further, clone the repo and open `/src/VSIXopenFrameworks.sln` in Visual Studio.
 
 Running the **VSIXopenFrameworks** project (right-click, Debug, or F5) will start the experimental version of Visual Studio, 
 which will run having the Visual Studio Extension (vsix) already loaded.
